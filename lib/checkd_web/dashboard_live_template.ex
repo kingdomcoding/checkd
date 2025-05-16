@@ -4,6 +4,36 @@ defmodule CheckdWeb.DashboardLiveTemplate do
   def render(assigns) do
     ~H"""
     <.sidebar live_action={@live_action} checkd_id={@checkd_id} />
+    <.main live_action={@live_action} />
+    """
+  end
+
+  def main(%{live_action: :public_badges} = assigns) do
+    ~H"""
+    <.main_layout>
+        <:title>Public Badges</:title>
+        <:subtitle>Browse the list of publicly available badges to add to your collection. Discover badges that match your interests and aspirations.</:subtitle>
+        <:content>
+            <div class="relative overflow-hidden rounded-lg group">
+                <img class="object-cover w-full h-[320px] lg:h-auto scale-100 ease-in duration-300 group-hover:scale-125" src={~p"/images/badge-fitness.svg"} alt="">
+                <div class="absolute inset-0 grid items-end justify-center p-4 bg-gradient-to-b from-transparent to-black/60">
+                <div class="text-center">
+                    <p class="text-xl font-bold text-white">
+                    Hydrocut Run
+                    </p>
+                    <p class="text-base font-medium text-gray-300">
+                    Cycling Team
+                    </p>
+                </div>
+                </div>
+            </div>
+        </:content>
+    </.main_layout>
+    """
+  end
+
+  def main(assigns) do
+    ~H"""
     """
   end
 
@@ -86,6 +116,27 @@ defmodule CheckdWeb.DashboardLiveTemplate do
             </div>
         </div>
     </aside>
+    """
+  end
+
+  def main_layout(assigns) do
+    ~H"""
+    <section class="sm:ml-64 bg-white dark:bg-gray-900 antialiased">
+        <div class="max-w-screen-xl px-4 py-8 mx-auto lg:px-6">
+            <div class="max-w-3xl mx-auto text-center">
+            <h2 class="text-3xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-4xl dark:text-white">
+                {render_slot(@title)}
+            </h2>
+            <p class="mt-4 text-base font-normal text-gray-500 sm:text-xl dark:text-gray-400">
+                {render_slot(@subtitle)}
+            </p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 mt-8 lg:mt-16 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+                {render_slot(@content)}
+            </div>
+        </div>
+    </section>
     """
   end
 end
