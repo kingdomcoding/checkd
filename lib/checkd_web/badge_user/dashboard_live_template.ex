@@ -4,7 +4,7 @@ defmodule CheckdWeb.DashboardLiveTemplate do
   def render(assigns) do
     ~H"""
     <.sidebar live_action={@live_action} checkd_id={@checkd_id} />
-    <.main live_action={@live_action} />
+    <.main live_action={@live_action} page_params={@page_params} />
     """
   end
 
@@ -14,17 +14,26 @@ defmodule CheckdWeb.DashboardLiveTemplate do
         <:title>Public Badges</:title>
         <:subtitle>Browse the list of publicly available badges to add to your collection. Discover badges that match your interests and aspirations.</:subtitle>
         <:content>
-            <div class="relative overflow-hidden rounded-lg group">
-                <img class="object-cover w-full h-[320px] lg:h-auto scale-100 ease-in duration-300 group-hover:scale-125" src={~p"/images/badge-fitness.svg"} alt="">
-                <div class="absolute inset-0 grid items-end justify-center p-4 bg-gradient-to-b from-transparent to-black/60">
-                <div class="text-center">
-                    <p class="text-xl font-bold text-white">
-                    Hydrocut Run
-                    </p>
-                    <p class="text-base font-medium text-gray-300">
-                    Cycling Team
-                    </p>
-                </div>
+            <.empty_state :if={@page_params.badges == []}>
+                <:title>Oops! No badges found.</:title>
+                <:subtitle>It seems like there are no public badges available at the moment. Please check back later or explore other sections of the app.</:subtitle>
+                <:action>
+                </:action>
+            </.empty_state>
+
+            <div class="grid grid-cols-1 gap-4 mt-8 lg:mt-16 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+                <div :for={badge <- @page_params.badges} class="relative overflow-hidden rounded-lg group">
+                    <img class="object-cover w-full h-[320px] lg:h-auto scale-100 ease-in duration-300 group-hover:scale-125" src={badge.image} alt="">
+                    <div class="absolute inset-0 grid items-end justify-center p-4 bg-gradient-to-b from-transparent to-black/60">
+                    <div class="text-center">
+                        <p class="text-xl font-bold text-white">
+                        {badge.name}
+                        </p>
+                        <p class="text-base font-medium text-gray-300">
+                        {badge.issuer}
+                        </p>
+                    </div>
+                    </div>
                 </div>
             </div>
         </:content>
@@ -132,8 +141,24 @@ defmodule CheckdWeb.DashboardLiveTemplate do
             </p>
             </div>
 
-            <div class="grid grid-cols-1 gap-4 mt-8 lg:mt-16 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-                {render_slot(@content)}
+            {render_slot(@content)}
+        </div>
+    </section>
+    """
+  end
+
+  def empty_state(assigns) do
+    ~H"""
+    <section class="bg-white dark:bg-gray-900 antialiased mt-8">
+        <div class="max-w-screen-xl px-4 py-8 mx-auto lg:px-6">
+            <div class="max-w-md mx-auto text-center">
+                <h4 class="text-lg font-extrabold leading-tight tracking-tight text-gray-700 sm:text-xl dark:text-gray-2--">
+                    {render_slot(@title)}
+                </h4>
+                <p class="mt-4 text-xs font-normal text-gray-500 sm:text-sm dark:text-gray-400">
+                    {render_slot(@subtitle)}
+                </p>
+                {render_slot(@action)}
             </div>
         </div>
     </section>
