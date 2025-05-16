@@ -17,7 +17,8 @@ defmodule CheckdWeb.Router do
   scope "/", CheckdWeb do
     pipe_through :browser
 
-    live "/", DashboardLive
+    live "/", DashboardLive, :default
+    live "/public-badges", DashboardLive, :public_badges
   end
 
   # Other scopes may use custom stacks.

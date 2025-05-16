@@ -57,10 +57,13 @@ defmodule CheckdWeb.DashboardLiveTemplate do
                     <h3>Explore</h3>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <.link navigate={~p"/public-badges"} class={[
+                        "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group",
+                        @live_action == :public_badges && "bg-gray-100 dark:bg-gray-700"
+                        ]}>
                         <img src={~p"/images/public-badges.svg"} class="w-6 h-6" alt="Public Badges" />
                         <span class="ml-3">Public Badges</span>
-                    </a>
+                    </.link>
                 </li>
             </ul>
             <ul class="pt-5 my-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
@@ -73,7 +76,7 @@ defmodule CheckdWeb.DashboardLiveTemplate do
             </ul>
             <div class="absolute bottom-0 left-0 justify-center p-4 w-full bg-white dark:bg-gray-800 z-20">
                 <span class="flex items-center pl-2 text-xs text-gray-500 dark:text-gray-400 group">
-                    <a href={~p"/"}><img src={~p"/images/logo.svg"} class="h-24 sm:h-" alt="Logo" /></a>
+                    <.link navigate={~p"/"}><img src={~p"/images/logo.svg"} class="h-24 sm:h-" alt="Logo" /></.link>
                     <div class="ml-2 text-right">
                         <span>ver 1.7.0 beta 20250509.1</span>
                         <span>© 2025 <a href="https://app.checkd.io/leave?to=https%3A%2F%2Fcheckd.io" class="hover:text-gray-900 dark:hover:text-white underline">Dataswyft CheckD™</a>.</span>
