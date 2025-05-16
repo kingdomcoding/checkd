@@ -19,6 +19,7 @@ defmodule CheckdWeb.Router do
 
     live "/", DashboardLive, :default
     live "/public-badges", DashboardLive, :public_badges
+    live "/public-badges/:id", DashboardLive, :public_badge
   end
 
   # Other scopes may use custom stacks.
