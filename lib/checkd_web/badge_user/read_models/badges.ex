@@ -1,7 +1,7 @@
 defmodule CheckdWeb.BadgeUser.ReadModels.Badges do
   use CheckdWeb, :verified_routes
 
-  def public_badges() do
+  def my_badges() do
     [
       %{
         id: "1644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Hydrocut Run", issuer: "Hydrocut Cycling Team", image: ~p"/images/badge-fitness.svg", authentication_status: "Not authenticated",
@@ -15,6 +15,11 @@ defmodule CheckdWeb.BadgeUser.ReadModels.Badges do
         id: "3644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Business Card", issuer: "Ruby Coded", image: ~p"/images/badge-fitness.svg", authentication_status: "Not authenticated",
         overview: "My card"
       },
+    ]
+  end
+
+  def public_badges() do
+    [
       %{
         id: "4644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Supporter of Eat2Give SJBeacon", issuer: "The Business For Good Team", image: ~p"/images/110ad69d-badd-417d-9d1a-b06277f9bc70.jpeg", authentication_status: "Not authenticated",
         overview: "A community project by SubangFood. Dine out in Subang Jaya restaurants and every Eat2Give menu item bought will have RM3 donated to SJ Beacon. Find out more about this limited time campaign at Https://SubangFood.com/fundraising"

@@ -18,6 +18,8 @@ defmodule CheckdWeb.Router do
     pipe_through :browser
 
     live "/", DashboardLive, :default
+    live "/my-badges", DashboardLive, :my_badges
+    live "/my-badges/:id", DashboardLive, :my_badge
     live "/public-badges", DashboardLive, :public_badges
     live "/public-badges/:id", DashboardLive, :public_badge
   end

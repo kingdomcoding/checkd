@@ -8,6 +8,61 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
     """
   end
 
+  def main(%{live_action: :my_badges} = assigns) do
+    ~H"""
+    <.badges_layout>
+        <:title>My Badges</:title>
+        <:subtitle>View and manage the badges in your collection.</:subtitle>
+        <:content>
+            <.empty_state :if={@page_params.badges == []}>
+                <:title>Oops! No badges found.</:title>
+                <:subtitle>It seems like you have no badges available at the moment. Please add a badge or explore other sections of the app.</:subtitle>
+                <:action>
+                </:action>
+            </.empty_state>
+
+            <div class="grid grid-cols-1 gap-4 mt-8 lg:mt-16 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+                <.link navigate={~p"/my-badges/#{badge.id}"} :for={badge <- @page_params.badges} class="relative overflow-hidden rounded-lg group">
+                    <img class="object-cover w-full h-[320px] lg:h-auto scale-100 ease-in duration-300 group-hover:scale-125" src={badge.image} alt="">
+                    <div class="absolute inset-0 grid items-end justify-center p-4 bg-gradient-to-b from-transparent to-black/60">
+                    <div class="text-center">
+                        <p class="text-xl font-bold text-white">
+                        {badge.name}
+                        </p>
+                        <p class="text-base font-medium text-gray-300">
+                        {badge.issuer}
+                        </p>
+                    </div>
+                    </div>
+                </.link>
+            </div>
+        </:content>
+    </.badges_layout>
+    """
+  end
+
+  def main(%{live_action: :my_badge} = assigns) do
+    ~H"""
+    <.badge_layout image={@page_params.badge.image}>
+        <:name>{@page_params.badge.name}</:name>
+        <:issuer>{@page_params.badge.issuer}</:issuer>
+        <:authentication_status>{@page_params.badge.authentication_status}</:authentication_status>
+        <:overview>{@page_params.badge.overview}</:overview>
+        <:action_area>
+            <div class="mt-4 flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+                <a href="#" class="w-full inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
+                    Authenticate
+                    <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </a>
+                <a href="#" class="w-full inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                    View Information
+                </a>
+            </div>
+        </:action_area>
+    </.badge_layout>
+    """
+  end
+
   def main(%{live_action: :public_badges} = assigns) do
     ~H"""
     <.badges_layout>
@@ -95,10 +150,13 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
                     <h3>Main</h3>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <.link navigate={~p"/my-badges"} class={[
+                        "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group",
+                        @live_action in [:my_badges, :my_badge] && "bg-gray-100 dark:bg-gray-700"
+                        ]}>
                         <img src={~p"/images/badges.svg"} class="w-6 h-6" alt="Badges" />
                         <span class="ml-3">My Badges</span>
-                    </a>
+                    </.link>
                 </li>
                 <li>
                     <a href="#" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">

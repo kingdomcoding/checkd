@@ -5,7 +5,8 @@ defmodule CheckdWeb.BadgeUser.DashboardLive do
   def mount(_params, _session, socket) do
     socket = assign(socket, %{
       checkd_id: "@user1234",
-      badges: Badges.public_badges(),
+      my_badges: Badges.my_badges(),
+      public_badges: Badges.public_badges(),
     })
     {:ok, render_with(socket, &CheckdWeb.BadgeUser.DashboardLiveTemplate.render/1)}
   end
@@ -13,13 +14,21 @@ defmodule CheckdWeb.BadgeUser.DashboardLive do
   def handle_params(unsigned_params, _uri, socket) do
     page_params =
       case socket.assigns.live_action do
+        :my_badges ->
+          %{
+            badges: socket.assigns.my_badges,
+          }
+        :my_badge ->
+          %{
+            badge: Enum.find(socket.assigns.my_badges, fn badge -> badge.id == unsigned_params["id"] end),
+          }
         :public_badges ->
           %{
-            badges: socket.assigns.badges,
+            badges: socket.assigns.public_badges,
           }
         :public_badge ->
           %{
-            badge: Enum.find(socket.assigns.badges, fn badge -> badge.id == unsigned_params["id"] end),
+            badge: Enum.find(socket.assigns.public_badges, fn badge -> badge.id == unsigned_params["id"] end),
           }
         _ ->
           %{}
