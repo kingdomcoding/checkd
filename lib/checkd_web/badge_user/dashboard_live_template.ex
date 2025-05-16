@@ -5,6 +5,7 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
     ~H"""
     <.sidebar live_action={@live_action} checkd_id={@checkd_id} />
     <.main live_action={@live_action} page_params={@page_params} />
+    <.speed_dial />
     """
   end
 
@@ -205,6 +206,17 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
             </div>
         </div>
     </aside>
+    """
+  end
+
+  def speed_dial(assigns) do
+    ~H"""
+    <div class="fixed end-6 bottom-6 group">
+        <button type="button" aria-controls="speed-dial-menu-default" aria-expanded="false" class="p-4 flex items-center justify-center text-white bg-primary-700 rounded-full w-14 h-14 hover:bg-primary-800 dark:bg-primary-600 dark:hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 focus:outline-none dark:focus:ring-primary-800">
+            <img src={~p"/images/scanner.svg"} class="h-6-" alt="Scanner" />
+            <span class="sr-only">Open scanner</span>
+        </button>
+    </div>
     """
   end
 
