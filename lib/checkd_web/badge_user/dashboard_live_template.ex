@@ -1,4 +1,4 @@
-defmodule CheckdWeb.DashboardLiveTemplate do
+defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
   use CheckdWeb, :html
 
   def render(assigns) do

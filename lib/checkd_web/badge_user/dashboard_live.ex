@@ -1,4 +1,4 @@
-defmodule CheckdWeb.DashboardLive do
+defmodule CheckdWeb.BadgeUser.DashboardLive do
   use CheckdWeb, :live_view
   alias CheckdWeb.BadgeUser.ReadModels.Badges
 
@@ -6,7 +6,7 @@ defmodule CheckdWeb.DashboardLive do
     socket = assign(socket, %{
       checkd_id: "@user1234",
     })
-    {:ok, render_with(socket, &CheckdWeb.DashboardLiveTemplate.render/1)}
+    {:ok, render_with(socket, &CheckdWeb.BadgeUser.DashboardLiveTemplate.render/1)}
   end
 
   def handle_params(_unsigned_params, _uri, socket) do

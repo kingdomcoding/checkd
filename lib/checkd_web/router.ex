@@ -14,7 +14,7 @@ defmodule CheckdWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", CheckdWeb do
+  scope "/", CheckdWeb.BadgeUser do
     pipe_through :browser
 
     live "/", DashboardLive, :default
