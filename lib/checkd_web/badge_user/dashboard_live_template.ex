@@ -43,50 +43,23 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
 
   def main(%{live_action: :public_badge} = assigns) do
     ~H"""
-    <section class="sm:ml-64 bg-white dark:bg-gray-900">
-        <div class="max-w-screen-xl px-4 py-8 mx-auto lg:px-6 sm:py-16 lg:py-24">
-            <div class="text-center">
-                <h2 class="text-3xl sm:text-6xl font-extrabold text-gray-900 dark:text-white">
-                    {@page_params.badge.name}
-                </h2>
-                <p class="mt-2 text-lg sm:text-2xl font-normal text-gray-500 dark:text-gray-400">
-                    {@page_params.badge.issuer}
-                </p>
-
-                <div class="flex flex-col items-center justify-center gap-4 mt-4 sm:mt-5 sm:gap-8 sm:flex-row">
-                    <span class="inline-flex items-center text-base font-semibold leading-tight text-primary-600 hover:underline dark:text-primary-500">
-                        {@page_params.badge.authentication_status}
-                    </span>
-                </div>
+    <.badge_layout image={@page_params.badge.image}>
+        <:name>{@page_params.badge.name}</:name>
+        <:issuer>{@page_params.badge.issuer}</:issuer>
+        <:authentication_status>{@page_params.badge.authentication_status}</:authentication_status>
+        <:overview>{@page_params.badge.overview}</:overview>
+        <:action_area>
+            <div class="mt-4 flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+                <a href="#" class="w-full inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
+                    Authenticate
+                    <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </a>
+                <a href="#" class="w-full inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                    View Information
+                </a>
             </div>
-
-            <div class="max-w-5xl mx-auto mt-8 lg:mt-16">
-                <img class="w-full h-96 object-contain rounded-lg shadow-lg shadow-primary-200 dark:shadow-primary-800 border border-primary-300 dark:border-primary-900" src={@page_params.badge.image} alt={"#{@page_params.badge.name} badge image"}>
-            </div>
-
-            <div class="grid grid-cols-1 gap-8 mt-8 lg:gap-16 lg:mt-16">
-            <div>
-                <div>
-                    <h3 class="text-center text-2xl font-extrabold text-gray-900 dark:text-white">
-                        Overview
-                    </h3>
-                    <p class="text-center mt-2 text-lg font-normal text-gray-500 dark:text-gray-400">
-                        {@page_params.badge.overview}
-                    </p>
-                    <div class="mt-4 flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
-                        <a href="#" class="w-full inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
-                            Authenticate
-                            <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                        </a>
-                        <a href="#" class="w-full inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                            View Information
-                        </a>
-                    </div>
-                </div>
-            </div>
-            </div>
-        </div>
-    </section>
+        </:action_area>
+    </.badge_layout>
     """
   end
 
@@ -191,6 +164,48 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
             </div>
 
             {render_slot(@content)}
+        </div>
+    </section>
+    """
+  end
+
+  def badge_layout(assigns) do
+    ~H"""
+    <section class="sm:ml-64 bg-white dark:bg-gray-900">
+        <div class="max-w-screen-xl px-4 py-8 mx-auto lg:px-6 sm:py-16 lg:py-24">
+            <div class="text-center">
+                <h2 class="text-3xl sm:text-6xl font-extrabold text-gray-900 dark:text-white">
+                    {render_slot(@name)}
+                </h2>
+                <p class="mt-2 text-lg sm:text-2xl font-normal text-gray-500 dark:text-gray-400">
+                    {render_slot(@issuer)}
+                </p>
+
+                <div class="flex flex-col items-center justify-center gap-4 mt-4 sm:mt-5 sm:gap-8 sm:flex-row">
+                    <span class="inline-flex items-center text-base font-semibold leading-tight text-primary-600 hover:underline dark:text-primary-500">
+                        {render_slot(@authentication_status)}
+                    </span>
+                </div>
+            </div>
+
+            <div class="max-w-5xl mx-auto mt-8 lg:mt-16">
+                <img class="w-full h-96 object-contain rounded-lg shadow-lg shadow-primary-200 dark:shadow-primary-800 border border-primary-300 dark:border-primary-900" src={@image} alt="Badge image">
+            </div>
+
+            <div class="grid grid-cols-1 gap-8 mt-8 lg:gap-16 lg:mt-16">
+            <div>
+                <div>
+                    <h3 class="text-center text-2xl font-extrabold text-gray-900 dark:text-white">
+                        Overview
+                    </h3>
+                    <p class="text-center mt-2 text-lg font-normal text-gray-500 dark:text-gray-400">
+                        {render_slot(@overview)}
+                    </p>
+
+                    {render_slot(@action_area)}
+                </div>
+            </div>
+            </div>
         </div>
     </section>
     """
