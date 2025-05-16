@@ -7,6 +7,9 @@
 # General application configuration
 import Config
 
+config :spark,
+  formatter: ["Ash.Resource": [section_order: [:admin]], "Ash.Domain": [section_order: [:admin]]]
+
 config :checkd,
   ecto_repos: [Checkd.Repo],
   generators: [timestamp_type: :utc_datetime]

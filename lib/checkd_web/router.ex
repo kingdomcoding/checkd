@@ -41,4 +41,14 @@ defmodule CheckdWeb.Router do
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
+
+  if Application.compile_env(:checkd, :dev_routes) do
+    import AshAdmin.Router
+
+    scope "/admin" do
+      pipe_through :browser
+
+      ash_admin "/"
+    end
+  end
 end
