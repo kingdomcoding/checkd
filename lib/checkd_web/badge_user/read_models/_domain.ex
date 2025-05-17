@@ -10,6 +10,7 @@ defmodule CheckdWeb.BadgeUser.ReadModels.Domain do
   def init(_arg) do
     children = [
       CheckdWeb.BadgeUser.ReadModels.Badges,
+      CheckdWeb.BadgeUser.ReadModels.MyPublicBadges,
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

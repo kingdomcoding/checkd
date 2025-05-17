@@ -25,6 +25,7 @@ defmodule CheckdWeb.BadgeUser.ReadModels.Badges do
   code_interface do
     domain CheckdWeb.BadgeUser
     define :create
+    define :read
   end
 
   def handle(%Checkd.BadgeManagement.DomainEvents.PublicBadgeCreated{} = event, _metadata) do
