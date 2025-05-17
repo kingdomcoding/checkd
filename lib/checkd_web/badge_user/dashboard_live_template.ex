@@ -16,9 +16,12 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
         <:subtitle>View and manage the badges in your collection.</:subtitle>
         <:content>
             <.empty_state :if={@page_params.badges == []}>
-                <:title>Oops! No badges found.</:title>
-                <:subtitle>It seems like you have no badges available at the moment. Please add a badge or explore other sections of the app.</:subtitle>
+                <:message>It seems like you have no badges</:message>
                 <:action>
+                    <.link navigate={~p"/public-badges"} class="w-full inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
+                        View Public Badges
+                        <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    </.link>
                 </:action>
             </.empty_state>
 
@@ -84,8 +87,7 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
         <:subtitle>Browse the list of publicly available badges to add to your collection. Discover badges that match your interests and aspirations.</:subtitle>
         <:content>
             <.empty_state :if={@page_params.badges == []}>
-                <:title>Oops! No badges found.</:title>
-                <:subtitle>It seems like there are no public badges available at the moment. Please check back later or explore other sections of the app.</:subtitle>
+                <:message>It seems there are no public badges available at the moment</:message>
                 <:action>
                 </:action>
             </.empty_state>
@@ -451,19 +453,13 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
 
   def empty_state(assigns) do
     ~H"""
-    <section class="bg-white dark:bg-gray-900 antialiased mt-8">
-        <div class="max-w-screen-xl px-4 py-8 mx-auto lg:px-6">
-            <div class="max-w-md mx-auto text-center">
-                <h4 class="text-lg font-extrabold leading-tight tracking-tight text-gray-700 sm:text-xl dark:text-gray-2--">
-                    {render_slot(@title)}
-                </h4>
-                <p class="mt-4 text-xs font-normal text-gray-500 sm:text-sm dark:text-gray-400">
-                    {render_slot(@subtitle)}
-                </p>
-                {render_slot(@action)}
-            </div>
+    <div class="mx-auto mt-48 max-w-md p-4 text-center rounded-lg shadow sm:p-5">
+        <img src={~p"/images/exclamation.svg"} class="w-32 h-32 mb-4 mx-auto" alt="Oops" />
+        <p class="mb-4 text-gray-500 dark:text-gray-300">{render_slot(@message)}</p>
+        <div class="mt-8">
+            {render_slot(@action)}
         </div>
-    </section>
+    </div>
     """
   end
 end
