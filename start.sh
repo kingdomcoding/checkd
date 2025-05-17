@@ -1,5 +1,5 @@
 # Setup database
-mix data.setup
+mix data.reset
 
 # Make server file executable
 chmod a+x _build/prod/rel/checkd/bin/server
