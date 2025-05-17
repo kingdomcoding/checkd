@@ -10,7 +10,7 @@ defmodule CheckdWeb.BadgeUser.ReadModels.Badges do
           title: "Hydrocut Run",
           voucher_code: nil,
           description: "Hydrocut Run"
-        }
+        }, offer: nil
       },
       %{
         id: "2644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "CheckD Data Wallet Innovators", issuer: "Dataswyft Community", image: ~p"/images/1a0514cb-813d-4444-ad8b-4bec2b9fbb46.png", authentication_status: "Not authenticated",
@@ -19,11 +19,11 @@ defmodule CheckdWeb.BadgeUser.ReadModels.Badges do
           title: "Free drinks at designated pubs. More offers to come.",
           voucher_code: nil,
           description: "Show this badge at designated pubs to get a thank you drink from Dataswyft."
-        }
+        }, offer: nil
       },
       %{
         id: "3644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Business Card", issuer: "Ruby Coded", image: ~p"/images/badge-fitness.svg", authentication_status: "Not authenticated",
-        overview: "My card", information: nil
+        overview: "My card", information: nil, offer: nil
       },
     ]
   end
@@ -37,7 +37,7 @@ defmodule CheckdWeb.BadgeUser.ReadModels.Badges do
           title: "F&B places to support this Eat2Give SJBeacon campaign",
           voucher_code: nil,
           description: "Find for the list of F&B at https://subangfood.com/fundraising"
-        }
+        }, offer: nil
       },
       %{
         id: "5644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "AITV", issuer: "AITV", image: ~p"/images/6530f872-71b8-4c83-92a3-9c41420292fe.jpeg", authentication_status: "Not authenticated",
@@ -46,28 +46,28 @@ defmodule CheckdWeb.BadgeUser.ReadModels.Badges do
           title: "AITV Service Providers",
           voucher_code: "AITV",
           description: "Join AITV Team. DIscover what's possible and how through interactive TV we can bring new experiences like never before."
-        }
+        }, offer: nil
       },
       %{
         id: "6644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Eat2Give Supporter", issuer: "Dataswyft Sdn Bhd", image: ~p"/images/110ad69d-badd-417d-9d1a-b06277f9bc70.jpeg", authentication_status: "Not authenticated",
-        overview: "Support by ordering designated items at participating restaurants.", information: nil
+        overview: "Support by ordering designated items at participating restaurants.", information: nil, offer: %{embed_url: "https://www.checkd.io/eat2give"}
       },
       %{
         id: "7644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Dataswyft Merchant", issuer: "Dataswyft Sdn Bhd", image: ~p"/images/23734ccc-3c8b-4853-9661-10d78f3b031a.jpeg", authentication_status: "Not authenticated",
-        overview: "Authenticated holders of this badge are approved / appointed Merchants by Dataswyft.", information: nil
+        overview: "Authenticated holders of this badge are approved / appointed Merchants by Dataswyft.", information: nil, offer: nil
       },
 
       %{
         id: "8644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Donated to Eat2Give (2) times", issuer: "Dataswyft Sdn Bhd", image: ~p"/images/3fd3c89d-7053-4069-aab2-2f2c6e523ca2.jpeg", authentication_status: "Not authenticated",
-        overview: "This badge verifies that the holder has donated (scanned + validated) TWO times for the Eat2Give Campaign.", information: nil
+        overview: "This badge verifies that the holder has donated (scanned + validated) TWO times for the Eat2Give Campaign.", information: nil, offer: nil
       },
       %{
         id: "9644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Donated to Eat2Give (5) times", issuer: "Dataswyft Sdn Bhd", image: ~p"/images/c530653b-9b2f-486e-8394-b2ab15dba80d.jpeg", authentication_status: "Not authenticated",
-        overview: "This badge verifies that the holder has donated (scanned + validated) FIVE times for the Eat2Give Campaign.", information: nil
+        overview: "This badge verifies that the holder has donated (scanned + validated) FIVE times for the Eat2Give Campaign.", information: nil, offer: nil
       },
       %{
         id: "0644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Dataswyft Badge Issuer", issuer: "Dataswyft Sdn Bhd", image: ~p"/images/23734ccc-3c8b-4853-9661-10d78f3b031a.jpeg", authentication_status: "Not authenticated",
-        overview: "Authenticated holders of this badge are approved / verified badge issuers by Dataswyft.", information: nil
+        overview: "Authenticated holders of this badge are approved / verified badge issuers by Dataswyft.", information: nil, offer: nil
       },
     ]
   end
