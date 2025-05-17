@@ -84,7 +84,7 @@ defmodule Checkd.MixProject do
         "event_store.setup",
         "run priv/repo/seeds.exs"
       ],
-      "data.reset": ["ecto.drop --force", "data.setup"],
+      "data.reset": ["ecto.drop --force-drop", "data.setup"],
       "event_store.setup": ["event_store.create", "event_store.init"],
       test: ["ash.setup --quiet", "event_store.setup", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
