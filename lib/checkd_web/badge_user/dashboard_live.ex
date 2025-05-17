@@ -2,12 +2,27 @@ defmodule CheckdWeb.BadgeUser.DashboardLive do
   use CheckdWeb, :live_view
 
   def mount(_params, _session, socket) do
+    # TODO: Replace with proper authentication
+    # {:ok, %{id: user_id}} = Checkd.UserManagement.create_user()
+    # |> dbg()
+
+    user_id = "3d4f09c7-2d2e-4acc-aea8-0ca303e9013a"
+
+    CheckdWeb.Endpoint.subscribe("badge_user:my_public_badges:changed:#{user_id}")
+    CheckdWeb.Endpoint.subscribe("badge_user:my_badges:changed:#{user_id}")
+
+    # {:ok, _} = Checkd.BadgeManagement.authenticate_badge(%{user_id: "3d4f09c7-2d2e-4acc-aea8-0ca303e9013a", badge_id: "f09b03db-3559-4f44-8ca7-a8a38b1336f8"})
+
     socket = assign(socket, %{
-      checkd_id: "@user1234",
-      my_badges: my_badges(),
-      public_badges: public_badges(),
+      user_id: user_id,
+      checkd_id: checkd_id(user_id),
+      my_badges: my_badges(user_id),
+      public_badges: public_badges(user_id),
     })
+
     {:ok, render_with(socket, &CheckdWeb.BadgeUser.DashboardLiveTemplate.render/1)}
+
+    {:ok, socket}
   end
 
   def handle_params(unsigned_params, _uri, socket) do
@@ -33,90 +48,69 @@ defmodule CheckdWeb.BadgeUser.DashboardLive do
           %{}
       end
 
+      socket = render_with(socket, &CheckdWeb.BadgeUser.DashboardLiveTemplate.render/1)
+
     {:noreply, assign(socket, page_params: page_params)}
   end
 
-  def my_badges() do
-    [
-      %{
-        id: "1644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Hydrocut Run", issuer: "Hydrocut Cycling Team", image: ~p"/images/badge-fitness.svg",
-        authenticated_on: nil, authentication_status: "Not authenticated",
-        overview: "2k Hydrocut run", information: %{
-          image: ~p"/images/badge-fitness.svg",
-          title: "Hydrocut Run",
-          voucher_code: nil,
-          description: "Hydrocut Run"
-        }, offer: nil,
-        validation: %{url: "https://example.com/validate/1644aff6-e87f-4852-8b90-e65ac6fbbc72", count: 0},
-      },
-      %{
-        id: "2644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "CheckD Data Wallet Innovators", issuer: "Dataswyft Community", image: ~p"/images/1a0514cb-813d-4444-ad8b-4bec2b9fbb46.png",
-        authenticated_on: nil, authentication_status: "Not authenticated",
-        overview: "Claim this badge if you are planning to innovate on CheckD Data Wallet and discover the potential of data and badges.", information: %{
-          image: ~p"/images/badge-fitness.svg",
-          title: "Free drinks at designated pubs. More offers to come.",
-          voucher_code: nil,
-          description: "Show this badge at designated pubs to get a thank you drink from Dataswyft."
-        }, offer: nil,
-        validation: %{url: "https://example.com/validate/2644aff6-e87f-4852-8b90-e65ac6fbbc72", count: 0},
-      },
-      %{
-        id: "3644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Business Card", issuer: "Ruby Coded", image: ~p"/images/badge-fitness.svg",
-        authenticated_on: ~D[2025-05-16], authentication_status: "Authenticated on May 16, 2025",
-        overview: "My card", information: nil, offer: nil,
-        validation: %{url: "https://example.com/validate/3644aff6-e87f-4852-8b90-e65ac6fbbc72", count: 0},
-      },
-    ]
+  def handle_info(%Phoenix.Socket.Broadcast{payload: %{resource: CheckdWeb.BadgeUser.ReadModels.MyPublicBadges}} = _message, socket) do
+    socket = assign(socket, %{public_badges: public_badges(socket.assigns.user_id)})
+    {:noreply, socket}
   end
 
-  def public_badges() do
-    [
-      %{
-        id: "4644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Supporter of Eat2Give SJBeacon", issuer: "The Business For Good Team", image: ~p"/images/110ad69d-badd-417d-9d1a-b06277f9bc70.jpeg",
-        authenticated_on: nil, authentication_status: "Not authenticated",
-        overview: "A community project by SubangFood. Dine out in Subang Jaya restaurants and every Eat2Give menu item bought will have RM3 donated to SJ Beacon. Find out more about this limited time campaign at Https://SubangFood.com/fundraising", information: %{
-          image: ~p"/images/a92c1f4a-02c0-4bef-96d0-264e2de3829d.jpeg",
-          title: "F&B places to support this Eat2Give SJBeacon campaign",
-          voucher_code: nil,
-          description: "Find for the list of F&B at https://subangfood.com/fundraising"
-        }, offer: nil
-      },
-      %{
-        id: "5644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "AITV", issuer: "AITV", image: ~p"/images/6530f872-71b8-4c83-92a3-9c41420292fe.jpeg",
-        authenticated_on: nil, authentication_status: "Not authenticated",
-        overview: "AITV is the next natural evolution of connected and smart TV.", information: %{
-          image: ~p"/images/f0534612-0525-4710-84a3-be0568efed61.jpeg",
-          title: "AITV Service Providers",
-          voucher_code: "AITV",
-          description: "Join AITV Team. DIscover what's possible and how through interactive TV we can bring new experiences like never before."
-        }, offer: nil
-      },
-      %{
-        id: "6644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Eat2Give Supporter", issuer: "Dataswyft Sdn Bhd", image: ~p"/images/110ad69d-badd-417d-9d1a-b06277f9bc70.jpeg",
-        authenticated_on: nil, authentication_status: "Not authenticated",
-        overview: "Support by ordering designated items at participating restaurants.", information: nil, offer: %{embed_url: "https://www.checkd.io/eat2give"}
-      },
-      %{
-        id: "7644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Dataswyft Merchant", issuer: "Dataswyft Sdn Bhd", image: ~p"/images/23734ccc-3c8b-4853-9661-10d78f3b031a.jpeg",
-        authenticated_on: nil, authentication_status: "Not authenticated",
-        overview: "Authenticated holders of this badge are approved / appointed Merchants by Dataswyft.", information: nil, offer: nil
-      },
+  def handle_info(%Phoenix.Socket.Broadcast{payload: %{resource: CheckdWeb.BadgeUser.ReadModels.MyBadges}} = _message, socket) do
+    socket = assign(socket, %{my_badges: my_badges(socket.assigns.user_id)})
+    {:noreply, socket}
+  end
+
+  def checkd_id(user_id) do
+    "@user#{String.slice(user_id, 0, 4)}"
+  end
+
+  def my_badges(user_id) do
+    {:ok, badges} = CheckdWeb.BadgeUser.ReadModels.MyBadges.all(user_id)
+
+    Enum.map(badges, fn badge ->
+      authentication_status =
+        if badge.authenticated_on do
+          "Authenticated on #{badge.authenticated_on.month} #{badge.authenticated_on.day}, #{badge.authenticated_on.year}"
+        else
+          "Not authenticated"
+        end
 
       %{
-        id: "8644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Donated to Eat2Give (2) times", issuer: "Dataswyft Sdn Bhd", image: ~p"/images/3fd3c89d-7053-4069-aab2-2f2c6e523ca2.jpeg",
-        authenticated_on: nil, authentication_status: "Not authenticated",
-        overview: "This badge verifies that the holder has donated (scanned + validated) TWO times for the Eat2Give Campaign.", information: nil, offer: nil
-      },
+        id: badge.badge.id,
+        name: badge.badge.name,
+        issuer: badge.badge.issuer,
+        image: badge.badge.image,
+        authenticated_on: badge.authenticated_on,
+        authentication_status: authentication_status,
+        overview: badge.badge.overview,
+        information: badge.badge.information,
+        offer: badge.badge.offer,
+        validation: %{
+          url: "https://example.com/validate/#{badge.badge.id}",
+          count: badge.validation_count,
+        }
+      }
+    end)
+  end
+
+  def public_badges(user_id) do
+    {:ok, badges} = CheckdWeb.BadgeUser.ReadModels.MyPublicBadges.all(user_id)
+
+    Enum.map(badges, fn badge ->
       %{
-        id: "9644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Donated to Eat2Give (5) times", issuer: "Dataswyft Sdn Bhd", image: ~p"/images/c530653b-9b2f-486e-8394-b2ab15dba80d.jpeg",
-        authenticated_on: nil, authentication_status: "Not authenticated",
-        overview: "This badge verifies that the holder has donated (scanned + validated) FIVE times for the Eat2Give Campaign.", information: nil, offer: nil
-      },
-      %{
-        id: "0644aff6-e87f-4852-8b90-e65ac6fbbc72", name: "Dataswyft Badge Issuer", issuer: "Dataswyft Sdn Bhd", image: ~p"/images/23734ccc-3c8b-4853-9661-10d78f3b031a.jpeg",
-        authenticated_on: nil, authentication_status: "Not authenticated",
-        overview: "Authenticated holders of this badge are approved / verified badge issuers by Dataswyft.", information: nil, offer: nil
-      },
-    ]
+        id: badge.badge.id,
+        name: badge.badge.name,
+        issuer: badge.badge.issuer,
+        image: badge.badge.image,
+        authenticated_on: nil,
+        authentication_status: "Not authenticated",
+        overview: badge.badge.overview,
+        information: badge.badge.information,
+        offer: badge.badge.offer
+      }
+    end)
   end
 end

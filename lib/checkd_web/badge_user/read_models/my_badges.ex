@@ -15,6 +15,13 @@ defmodule CheckdWeb.BadgeUser.ReadModels.MyBadges do
     attribute :validation_count, :integer, allow_nil?: false, default: 0
   end
 
+  relationships do
+    belongs_to :badge, CheckdWeb.BadgeUser.ReadModels.Badges do
+      source_attribute :badge_id
+      destination_attribute :id
+    end
+  end
+
   actions do
     defaults [:create, :read]
     default_accept [:user_id, :badge_id, :authenticated_on, :validation_count]
@@ -23,6 +30,11 @@ defmodule CheckdWeb.BadgeUser.ReadModels.MyBadges do
       argument :user_id, :uuid, allow_nil?: false
 
       filter expr(user_id == ^arg(:user_id))
+
+      prepare fn query, _ ->
+        query
+        |> Ash.Query.load([:badge])
+      end
     end
   end
 

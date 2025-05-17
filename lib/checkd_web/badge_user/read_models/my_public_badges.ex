@@ -13,6 +13,13 @@ defmodule CheckdWeb.BadgeUser.ReadModels.MyPublicBadges do
     attribute :badge_id, :uuid, primary_key?: true, allow_nil?: false
   end
 
+  relationships do
+    belongs_to :badge, CheckdWeb.BadgeUser.ReadModels.Badges do
+      source_attribute :badge_id
+      destination_attribute :id
+    end
+  end
+
   actions do
     defaults [:create, :read, :destroy]
     default_accept [:user_id, :badge_id]
@@ -21,6 +28,11 @@ defmodule CheckdWeb.BadgeUser.ReadModels.MyPublicBadges do
       argument :user_id, :uuid, allow_nil?: false
 
       filter expr(user_id == ^arg(:user_id))
+
+      prepare fn query, _ ->
+        query
+        |> Ash.Query.load([:badge])
+      end
     end
   end
 
