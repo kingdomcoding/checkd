@@ -15,12 +15,19 @@ defmodule CheckdWeb.BadgeUser.ReadModels.MyPublicBadges do
   actions do
     defaults [:create, :read, :destroy]
     default_accept [:user_id, :badge_id]
+
+    read :all do
+      argument :user_id, :uuid, allow_nil?: false
+
+      filter expr(user_id == ^arg(:user_id))
+    end
   end
 
   code_interface do
     domain CheckdWeb.BadgeUser
     define :create
     define :destroy
+    define :all, args: [:user_id]
   end
 
   def handle(%Checkd.UserManagement.DomainEvents.UserCreated{} = event, _metadata) do
