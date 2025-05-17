@@ -1,6 +1,6 @@
 defmodule CheckdWeb.BadgeUser.ReadModels.MyPublicBadges do
   use Ash.Resource,
-    data_layer: Ash.DataLayer.Ets,
+    data_layer: AshPostgres.DataLayer,
     notifiers: [Ash.Notifier.PubSub],
     domain: CheckdWeb.BadgeUser.ReadModels.Domain
 
@@ -49,6 +49,11 @@ defmodule CheckdWeb.BadgeUser.ReadModels.MyPublicBadges do
 
     publish :create, ["changed", :user_id]
     publish :destroy, ["changed", :user_id]
+  end
+
+  postgres do
+    table "badge_user__read_models__my_public_badges"
+    repo Checkd.Repo
   end
 
   def handle(%Checkd.UserManagement.DomainEvents.UserCreated{} = event, _metadata) do

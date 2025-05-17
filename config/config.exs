@@ -7,16 +7,20 @@
 # General application configuration
 import Config
 
-config :checkd, event_stores: [Checkd.EventStore]
+config :checkd, event_stores: [Checkd.EventStore], ecto_repos: [Checkd.Repo]
 
-config :checkd, ash_domains: [
-  Checkd.BadgeManagement,
-  Checkd.UserManagement,
-  CheckdWeb.BadgeUser.ReadModels.Domain,
-]
+config :checkd,
+  ash_domains: [
+    Checkd.BadgeManagement,
+    Checkd.UserManagement,
+    CheckdWeb.BadgeUser.ReadModels.Domain
+  ]
 
 config :spark,
-  formatter: ["Ash.Resource": [section_order: [:admin]], "Ash.Domain": [section_order: [:admin]]]
+  formatter: [
+    "Ash.Resource": [section_order: [:postgres, :admin]],
+    "Ash.Domain": [section_order: [:admin]]
+  ]
 
 config :checkd,
   ecto_repos: [Checkd.Repo],

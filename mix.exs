@@ -65,6 +65,8 @@ defmodule Checkd.MixProject do
       {:commanded, "~> 1.4"},
       {:eventstore, "~> 1.4"},
       {:commanded_eventstore_adapter, "~> 1.4"},
+      {:ash_postgres, "~> 2.5"},
+      {:timex, "~> 3.7"}
     ]
   end
 
@@ -76,11 +78,16 @@ defmodule Checkd.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "event_store.setup", "run priv/repo/seeds.exs"],
+      setup: ["deps.get", "ash.setup", "assets.setup", "assets.build", "run priv/repo/seeds.exs"],
+      "ecto.setup": [
+        "ecto.create",
+        "ecto.migrate",
+        "event_store.setup",
+        "run priv/repo/seeds.exs"
+      ],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       "event_store.setup": ["event_store.create", "event_store.init"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "event_store.setup", "test"],
+      test: ["ash.setup --quiet", "event_store.setup", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["tailwind checkd", "esbuild checkd"],
       "assets.deploy": [

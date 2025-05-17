@@ -1,6 +1,6 @@
 defmodule CheckdWeb.BadgeUser.ReadModels.Badges do
   use Ash.Resource,
-    data_layer: Ash.DataLayer.Ets,
+    data_layer: AshPostgres.DataLayer,
     domain: CheckdWeb.BadgeUser.ReadModels.Domain
 
   use Commanded.Event.Handler,
@@ -27,6 +27,12 @@ defmodule CheckdWeb.BadgeUser.ReadModels.Badges do
     define :create
     define :read
   end
+
+  postgres do
+    table "badge_user__read_models__badges"
+    repo Checkd.Repo
+  end
+
 
   def handle(%Checkd.BadgeManagement.DomainEvents.PublicBadgeCreated{} = event, _metadata) do
     create(%{

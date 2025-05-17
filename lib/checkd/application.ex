@@ -26,7 +26,7 @@ defmodule Checkd.Application do
       # Start to serve requests, typically the last entry
       CheckdWeb.Endpoint,
       __MODULE__,
-      CheckdWeb.BadgeUser.ReadModels.Domain,
+      CheckdWeb.BadgeUser.ReadModels.Domain
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
