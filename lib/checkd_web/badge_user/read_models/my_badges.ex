@@ -3,10 +3,32 @@ defmodule CheckdWeb.BadgeUser.ReadModels.MyBadges do
     data_layer: Ash.DataLayer.Ets,
     domain: CheckdWeb.BadgeUser.ReadModels.Domain
 
+  use Commanded.Event.Handler,
+    application: Checkd.Application,
+    name: __MODULE__
+
   attributes do
     attribute :user_id, :uuid, primary_key?: true, allow_nil?: false
     attribute :badge_id, :uuid, primary_key?: true, allow_nil?: false
     attribute :authenticated_on, :date, allow_nil?: true
     attribute :validation_count, :integer, allow_nil?: false, default: 0
+  end
+
+  actions do
+    defaults [:create, :read]
+    default_accept [:user_id, :badge_id, :authenticated_on, :validation_count]
+  end
+
+  code_interface do
+    domain CheckdWeb.BadgeUser
+    define :create
+  end
+
+  def handle(%Checkd.BadgeManagement.DomainEvents.BadgeAuthenticated{} = event, %{created_at: authentication_datetime} = _metadata) do
+    create(%{
+      user_id: event.user_id,
+      badge_id: event.badge_id,
+      authenticated_on: DateTime.to_date(authentication_datetime),
+    })
   end
 end
