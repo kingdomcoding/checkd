@@ -22,6 +22,15 @@ defmodule CheckdWeb.BadgeUser.DashboardLive do
   end
 
   def handle_params(unsigned_params, _uri, socket) do
+    socket =
+      socket
+      |> assign(query_params: unsigned_params)
+      |> update_page_params()
+
+    {:noreply, socket}
+  end
+
+  def update_page_params(socket) do
     page_params =
       case socket.assigns.live_action do
         :my_badges ->
@@ -30,7 +39,7 @@ defmodule CheckdWeb.BadgeUser.DashboardLive do
           }
         :my_badge ->
           %{
-            badge: Enum.find(socket.assigns.my_badges, fn badge -> badge.id == unsigned_params["id"] end),
+            badge: Enum.find(socket.assigns.my_badges, fn badge -> badge.id == socket.assigns.query_params["id"] end),
           }
         :public_badges ->
           %{
@@ -38,13 +47,95 @@ defmodule CheckdWeb.BadgeUser.DashboardLive do
           }
         :public_badge ->
           %{
-            badge: Enum.find(socket.assigns.public_badges, fn badge -> badge.id == unsigned_params["id"] end),
+            badge: Enum.find(socket.assigns.public_badges, fn badge -> badge.id == socket.assigns.query_params["id"] end),
           }
         _ ->
           %{}
       end
 
-    {:noreply, assign(socket, page_params: page_params)}
+    assign(socket, page_params: page_params)
+  end
+
+  def handle_event("generate-seed-badges", _unsigned_params, socket) do
+    badges = [
+      %{
+        name: "Hydrocut Run", issuer: "Hydrocut Cycling Team", image: ~p"/images/badge-fitness.svg",
+        overview: "2k Hydrocut run", information: %{
+          image: ~p"/images/badge-fitness.svg",
+          title: "Hydrocut Run",
+          voucher_code: nil,
+          description: "Hydrocut Run"
+        }, offer: nil,
+      },
+      %{
+        name: "CheckD Data Wallet Innovators", issuer: "Dataswyft Community", image: ~p"/images/1a0514cb-813d-4444-ad8b-4bec2b9fbb46.png",
+        overview: "Claim this badge if you are planning to innovate on CheckD Data Wallet and discover the potential of data and badges.", information: %{
+          image: ~p"/images/badge-fitness.svg",
+          title: "Free drinks at designated pubs. More offers to come.",
+          voucher_code: nil,
+          description: "Show this badge at designated pubs to get a thank you drink from Dataswyft."
+        }, offer: nil,
+      },
+      %{
+        name: "Business Card", issuer: "Ruby Coded", image: ~p"/images/badge-fitness.svg",
+        overview: "My card", information: nil, offer: nil,
+      },
+      %{
+        name: "Supporter of Eat2Give SJBeacon", issuer: "The Business For Good Team", image: ~p"/images/110ad69d-badd-417d-9d1a-b06277f9bc70.jpeg",
+        overview: "A community project by SubangFood. Dine out in Subang Jaya restaurants and every Eat2Give menu item bought will have RM3 donated to SJ Beacon. Find out more about this limited time campaign at Https://SubangFood.com/fundraising", information: %{
+          image: ~p"/images/a92c1f4a-02c0-4bef-96d0-264e2de3829d.jpeg",
+          title: "F&B places to support this Eat2Give SJBeacon campaign",
+          voucher_code: nil,
+          description: "Find for the list of F&B at https://subangfood.com/fundraising"
+        }, offer: nil
+      },
+      %{
+        name: "AITV", issuer: "AITV", image: ~p"/images/6530f872-71b8-4c83-92a3-9c41420292fe.jpeg",
+        overview: "AITV is the next natural evolution of connected and smart TV.", information: %{
+          image: ~p"/images/f0534612-0525-4710-84a3-be0568efed61.jpeg",
+          title: "AITV Service Providers",
+          voucher_code: "AITV",
+          description: "Join AITV Team. DIscover what's possible and how through interactive TV we can bring new experiences like never before."
+        }, offer: nil
+      },
+      %{
+        name: "Eat2Give Supporter", issuer: "Dataswyft Sdn Bhd", image: ~p"/images/110ad69d-badd-417d-9d1a-b06277f9bc70.jpeg",
+        overview: "Support by ordering designated items at participating restaurants.", information: nil, offer: %{embed_url: "https://www.checkd.io/eat2give"}
+      },
+      %{
+        name: "Dataswyft Merchant", issuer: "Dataswyft Sdn Bhd", image: ~p"/images/23734ccc-3c8b-4853-9661-10d78f3b031a.jpeg",
+        overview: "Authenticated holders of this badge are approved / appointed Merchants by Dataswyft.", information: nil, offer: nil
+      },
+      %{
+        name: "Donated to Eat2Give (2) times", issuer: "Dataswyft Sdn Bhd", image: ~p"/images/3fd3c89d-7053-4069-aab2-2f2c6e523ca2.jpeg",
+        overview: "This badge verifies that the holder has donated (scanned + validated) TWO times for the Eat2Give Campaign.", information: nil, offer: nil
+      },
+      %{
+        name: "Donated to Eat2Give (5) times", issuer: "Dataswyft Sdn Bhd", image: ~p"/images/c530653b-9b2f-486e-8394-b2ab15dba80d.jpeg",
+        overview: "This badge verifies that the holder has donated (scanned + validated) FIVE times for the Eat2Give Campaign.", information: nil, offer: nil
+      },
+      %{
+        name: "Dataswyft Badge Issuer", issuer: "Dataswyft Sdn Bhd", image: ~p"/images/23734ccc-3c8b-4853-9661-10d78f3b031a.jpeg",
+        overview: "Authenticated holders of this badge are approved / verified badge issuers by Dataswyft.", information: nil, offer: nil
+      },
+    ]
+
+    Enum.each(badges, fn badge ->
+      {:ok, _} =
+        Checkd.BadgeManagement.create_public_badge(%{
+          name: badge.name,
+          issuer: badge.issuer,
+          image: badge.image,
+          overview: badge.overview,
+          information: badge.information,
+          offer: badge.offer
+        })
+    end)
+
+    {:noreply,
+      socket
+      |> put_flash(:info, "Seed badges generated successfully.")
+    }
   end
 
   def handle_event("authenticate-badge", %{"badge_id" => badge_id}, socket) do
@@ -58,12 +149,20 @@ defmodule CheckdWeb.BadgeUser.DashboardLive do
   end
 
   def handle_info(%Phoenix.Socket.Broadcast{payload: %{resource: CheckdWeb.BadgeUser.ReadModels.MyPublicBadges}} = _message, socket) do
-    socket = assign(socket, %{public_badges: public_badges(socket.assigns.user_id)})
+    socket =
+      socket
+      |> assign(%{public_badges: public_badges(socket.assigns.user_id)})
+      |> update_page_params()
+
     {:noreply, socket}
   end
 
   def handle_info(%Phoenix.Socket.Broadcast{payload: %{resource: CheckdWeb.BadgeUser.ReadModels.MyBadges}} = _message, socket) do
-    socket = assign(socket, %{my_badges: my_badges(socket.assigns.user_id)})
+    socket =
+      socket
+      |> assign(%{my_badges: my_badges(socket.assigns.user_id)})
+      |> update_page_params()
+
     {:noreply, socket}
   end
 
