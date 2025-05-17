@@ -1,6 +1,7 @@
 defmodule CheckdWeb.BadgeUser.ReadModels.MyBadges do
   use Ash.Resource,
     data_layer: Ash.DataLayer.Ets,
+    notifiers: [Ash.Notifier.PubSub],
     domain: CheckdWeb.BadgeUser.ReadModels.Domain
 
   use Commanded.Event.Handler,
@@ -29,6 +30,13 @@ defmodule CheckdWeb.BadgeUser.ReadModels.MyBadges do
     domain CheckdWeb.BadgeUser
     define :create
     define :all, args: [:user_id]
+  end
+
+  pub_sub do
+    prefix "badge_user:my_badges"
+    module CheckdWeb.Endpoint
+
+    publish :create, ["changed", :user_id]
   end
 
   def handle(%Checkd.BadgeManagement.DomainEvents.BadgeAuthenticated{} = event, %{created_at: authentication_datetime} = _metadata) do

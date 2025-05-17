@@ -1,6 +1,7 @@
 defmodule CheckdWeb.BadgeUser.ReadModels.MyPublicBadges do
   use Ash.Resource,
     data_layer: Ash.DataLayer.Ets,
+    notifiers: [Ash.Notifier.PubSub],
     domain: CheckdWeb.BadgeUser.ReadModels.Domain
 
   use Commanded.Event.Handler,
@@ -28,6 +29,14 @@ defmodule CheckdWeb.BadgeUser.ReadModels.MyPublicBadges do
     define :create
     define :destroy
     define :all, args: [:user_id]
+  end
+
+  pub_sub do
+    prefix "badge_user:my_public_badges"
+    module CheckdWeb.Endpoint
+
+    publish :create, ["changed", :user_id]
+    publish :destroy, ["changed", :user_id]
   end
 
   def handle(%Checkd.UserManagement.DomainEvents.UserCreated{} = event, _metadata) do
