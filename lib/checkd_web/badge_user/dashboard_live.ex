@@ -10,8 +10,6 @@ defmodule CheckdWeb.BadgeUser.DashboardLive do
       CheckdWeb.Endpoint.subscribe("badge_user:my_public_badges:changed:#{user_id}")
       CheckdWeb.Endpoint.subscribe("badge_user:my_badges:changed:#{user_id}")
 
-      # {:ok, _} = Checkd.BadgeManagement.authenticate_badge(%{user_id: "3d4f09c7-2d2e-4acc-aea8-0ca303e9013a", badge_id: "f09b03db-3559-4f44-8ca7-a8a38b1336f8"})
-
       socket = assign(socket, %{
         user_id: user_id,
         checkd_id: checkd_id(user_id),
@@ -47,6 +45,17 @@ defmodule CheckdWeb.BadgeUser.DashboardLive do
       end
 
     {:noreply, assign(socket, page_params: page_params)}
+  end
+
+  @spec handle_event(<<_::144>>, map(), any()) :: {:noreply, any()}
+  def handle_event("authenticate-badge", %{"badge_id" => badge_id}, socket) do
+    {:ok, _} = Checkd.BadgeManagement.authenticate_badge(%{user_id: socket.assigns.user_id, badge_id: badge_id})
+    
+    {:noreply,
+      socket
+      |> redirect(to: ~p"/my-badges")
+      |> put_flash(:info, "Badge authenticated successfully.")
+    }
   end
 
   def handle_info(%Phoenix.Socket.Broadcast{payload: %{resource: CheckdWeb.BadgeUser.ReadModels.MyPublicBadges}} = _message, socket) do
