@@ -78,13 +78,13 @@ defmodule Checkd.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ash.setup", "event_store.setup", "assets.setup", "assets.build", "run priv/repo/seeds.exs"],
-      "ecto.setup": [
-        "ecto.create",
-        "ecto.migrate",
+      setup: ["deps.get", "data.setup", "assets.setup", "assets.build", "run priv/repo/seeds.exs"],
+      "data.setup": [
+        "ash.setup",
+        "event_store.setup",
         "run priv/repo/seeds.exs"
       ],
-      "ecto.reset": ["ecto.drop", "ecto.setup", "event_store.setup"],
+      "data.reset": ["ecto.drop", "data.setup"],
       "event_store.setup": ["event_store.create", "event_store.init"],
       test: ["ash.setup --quiet", "event_store.setup", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
