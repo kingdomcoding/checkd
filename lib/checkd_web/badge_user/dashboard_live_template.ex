@@ -154,7 +154,7 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
                     <a href="#">CheckD User</a>
                 </h3>
                 <p class="font-light text-gray-500 dark:text-gray-400">{@checkd_id}</p>
-                <a href="#" class="inline-flex items-center justify-center w-full py-2.5 px-5 mt-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                <a href="#" class="cursor-not-allowed inline-flex items-center justify-center w-full py-2.5 px-5 mt-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                     <svg aria-hidden="true" class="mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                     Logout
                 </a>
@@ -173,13 +173,13 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
                     </.link>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <a href="#" class="cursor-not-allowed flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src={~p"/images/inbox.svg"} class="w-6 h-6" alt="Inbox" />
                         <span class="ml-3">My Inbox</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <a href="#" class="cursor-not-allowed flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src={~p"/images/data.svg"} class="w-6 h-6" alt="Data" />
                         <span class="ml-3">My Data</span>
                     </a>
@@ -201,7 +201,7 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
             </ul>
             <ul class="pt-5 my-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
                 <li>
-                    <a href="#" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <a href="#" class="cursor-not-allowed flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src={~p"/images/settings.svg"} class="w-6 h-6" alt="Settings" />
                         <span class="ml-3">Settings</span>
                     </a>
