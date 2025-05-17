@@ -184,7 +184,7 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
                     <h3>Main</h3>
                 </li>
                 <li>
-                    <.link navigate={~p"/my-badges"} class={[
+                    <.link navigate={~p"/"} class={[
                         "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group",
                         @live_action in [:my_badges, :my_badge] && "bg-gray-100 dark:bg-gray-700"
                         ]}>

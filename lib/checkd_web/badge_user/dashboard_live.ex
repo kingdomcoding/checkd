@@ -4,6 +4,8 @@ defmodule CheckdWeb.BadgeUser.DashboardLive do
   def mount(_params, session, socket) do
     user_id = Map.get(session, "user_id")
 
+    socket = assign(socket, %{user_id: user_id})
+
     if user_id == nil do
       {:ok, render_with(socket, &CheckdWeb.BadgeUser.SignedOutDashboardLiveTemplate.render/1)}
     else
@@ -22,12 +24,16 @@ defmodule CheckdWeb.BadgeUser.DashboardLive do
   end
 
   def handle_params(unsigned_params, _uri, socket) do
-    socket =
-      socket
-      |> assign(query_params: unsigned_params)
-      |> update_page_params()
+    if socket.assigns.user_id == nil do
+      {:noreply, socket}
+    else
+      socket =
+        socket
+        |> assign(query_params: unsigned_params)
+        |> update_page_params()
 
-    {:noreply, socket}
+      {:noreply, socket}
+    end
   end
 
   def update_page_params(socket) do
@@ -143,7 +149,7 @@ defmodule CheckdWeb.BadgeUser.DashboardLive do
 
     {:noreply,
       socket
-      |> redirect(to: ~p"/my-badges")
+      |> redirect(to: ~p"/")
       |> put_flash(:info, "Badge authenticated successfully.")
     }
   end
