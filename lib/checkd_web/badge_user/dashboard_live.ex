@@ -47,10 +47,9 @@ defmodule CheckdWeb.BadgeUser.DashboardLive do
     {:noreply, assign(socket, page_params: page_params)}
   end
 
-  @spec handle_event(<<_::144>>, map(), any()) :: {:noreply, any()}
   def handle_event("authenticate-badge", %{"badge_id" => badge_id}, socket) do
     {:ok, _} = Checkd.BadgeManagement.authenticate_badge(%{user_id: socket.assigns.user_id, badge_id: badge_id})
-    
+
     {:noreply,
       socket
       |> redirect(to: ~p"/my-badges")

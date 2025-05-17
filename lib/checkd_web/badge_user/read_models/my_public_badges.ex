@@ -62,7 +62,16 @@ defmodule CheckdWeb.BadgeUser.ReadModels.MyPublicBadges do
     end)
   end
 
-  # TODO: When a badge is created, create a record for each user
+  def handle(%Checkd.BadgeManagement.DomainEvents.PublicBadgeCreated{} = event, _metadata) do
+    {:ok, users} = CheckdWeb.BadgeUser.ReadModels.Users.read()
+
+    Enum.each(users, fn user ->
+      create(%{
+        user_id: user.id,
+        badge_id: event.id,
+      })
+    end)
+  end
 
   def handle(%Checkd.BadgeManagement.DomainEvents.BadgeAuthenticated{} = event, _metadata) do
     destroy(%{

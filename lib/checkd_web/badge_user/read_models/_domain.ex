@@ -9,6 +9,7 @@ defmodule CheckdWeb.BadgeUser.ReadModels.Domain do
   @impl true
   def init(_arg) do
     children = [
+      CheckdWeb.BadgeUser.ReadModels.Users,
       CheckdWeb.BadgeUser.ReadModels.Badges,
       CheckdWeb.BadgeUser.ReadModels.MyBadges,
       CheckdWeb.BadgeUser.ReadModels.MyPublicBadges,
@@ -18,6 +19,7 @@ defmodule CheckdWeb.BadgeUser.ReadModels.Domain do
   end
 
   resources do
+    resource CheckdWeb.BadgeUser.ReadModels.Users
     resource CheckdWeb.BadgeUser.ReadModels.Badges
     resource CheckdWeb.BadgeUser.ReadModels.MyBadges
     resource CheckdWeb.BadgeUser.ReadModels.MyPublicBadges
