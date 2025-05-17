@@ -51,10 +51,16 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
         <:overview>{@page_params.badge.overview}</:overview>
         <:action_area>
             <div class="mt-4 flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
-                <a href="#" class="w-full inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
+                <button :if={@page_params.badge.authenticated_on == nil} class="w-full inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
                     Authenticate
                     <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                </a>
+                </button>
+
+                <button id="validationButton" data-modal-target="validationModal" data-modal-toggle="validationModal" :if={@page_params.badge.authenticated_on != nil} class="w-full inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
+                    Validate
+                    <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
+                <.validation_modal :if={@page_params.badge.validation} validation={@page_params.badge.validation} />
 
                 <button id="viewInformationButton" data-modal-target="informationModal" data-modal-toggle="informationModal"  :if={@page_params.badge.information} class="w-full inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
                     View Information
@@ -113,10 +119,10 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
         <:overview>{@page_params.badge.overview}</:overview>
         <:action_area>
             <div class="mt-4 flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
-                <a href="#" class="w-full inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
+                <button :if={@page_params.badge.authenticated_on == nil} class="w-full inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
                     Authenticate
                     <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                </a>
+                </button>
                 <button id="viewInformationButton" data-modal-target="informationModal" data-modal-toggle="informationModal"  :if={@page_params.badge.information} class="w-full inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
                     View Information
                 </button>
@@ -343,6 +349,37 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
                     </p>
                     <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                         This section is currently under construction and will soon host a comprehensive and detailed offer page. The content here will be meticulously crafted to provide users with an engaging and informative experience, showcasing the various offers available. Please stay tuned as we work diligently to bring this feature to life, ensuring it meets the highest standards of quality and usability.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    """
+  end
+
+  def validation_modal(assigns) do
+    ~H"""
+    <div id="validationModal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+                    <h3 class="text-xl font-medium text-gray-900 dark:text-white">
+                        Validation Count: {@validation.count}
+                    </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="qrScannerModal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="flex flex-col items-center p-4 md:p-5 space-y-4">
+                    <img src={~p"/images/qr-code-example.svg"} class="" alt="Scanner" />
+                    <p class="text-base text-center leading-relaxed text-gray-500 dark:text-gray-400">
+                        A QR code for {@validation.url} goes here
                     </p>
                 </div>
             </div>
