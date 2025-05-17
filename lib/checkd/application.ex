@@ -5,6 +5,13 @@ defmodule Checkd.Application do
 
   use Application
 
+  use Commanded.Application,
+    otp_app: :checkd,
+    event_store: [
+      adapter: Commanded.EventStore.Adapters.EventStore,
+      event_store: Checkd.EventStore
+    ]
+
   @impl true
   def start(_type, _args) do
     children = [
@@ -17,7 +24,8 @@ defmodule Checkd.Application do
       # Start a worker by calling: Checkd.Worker.start_link(arg)
       # {Checkd.Worker, arg},
       # Start to serve requests, typically the last entry
-      CheckdWeb.Endpoint
+      CheckdWeb.Endpoint,
+      __MODULE__,
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

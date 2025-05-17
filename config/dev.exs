@@ -10,6 +10,15 @@ config :checkd, Checkd.Repo,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
+config :checkd, Checkd.EventStore,
+  serializer: Commanded.Serialization.JsonSerializer,
+  username: "postgres",
+  password: "postgres",
+  database: "checkd_dev",
+  schema: "event_store",
+  hostname: "localhost",
+  pool_size: 10
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #

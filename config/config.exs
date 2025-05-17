@@ -7,7 +7,12 @@
 # General application configuration
 import Config
 
-config :checkd, ash_domains: [CheckdWeb.BadgeUser.ReadModels.Domain]
+config :checkd, event_stores: [Checkd.EventStore]
+
+config :checkd, ash_domains: [
+  Checkd.BadgeManagement,
+  CheckdWeb.BadgeUser.ReadModels.Domain,
+]
 
 config :spark,
   formatter: ["Ash.Resource": [section_order: [:admin]], "Ash.Domain": [section_order: [:admin]]]
