@@ -27,12 +27,6 @@ defmodule CheckdWeb.Router do
     get "/sign-out", AuthController, :sign_out
   end
 
-  scope "/super-admin", CheckdWeb.SuperAdmin do
-    pipe_through :browser
-
-    live "/super-secret", SuperSecretLive
-  end
-
   # Other scopes may use custom stacks.
   # scope "/api", CheckdWeb do
   #   pipe_through :api
