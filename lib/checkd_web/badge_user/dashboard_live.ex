@@ -1,28 +1,26 @@
 defmodule CheckdWeb.BadgeUser.DashboardLive do
   use CheckdWeb, :live_view
 
-  def mount(_params, _session, socket) do
-    # TODO: Replace with proper authentication
-    # {:ok, %{id: user_id}} = Checkd.UserManagement.create_user()
-    # |> dbg()
+  def mount(_params, session, socket) do
+    user_id = Map.get(session, "user_id")
 
-    user_id = "3d4f09c7-2d2e-4acc-aea8-0ca303e9013a"
+    if user_id == nil do
+      {:ok, render_with(socket, &CheckdWeb.BadgeUser.SignedOutDashboardLiveTemplate.render/1)}
+    else
+      CheckdWeb.Endpoint.subscribe("badge_user:my_public_badges:changed:#{user_id}")
+      CheckdWeb.Endpoint.subscribe("badge_user:my_badges:changed:#{user_id}")
 
-    CheckdWeb.Endpoint.subscribe("badge_user:my_public_badges:changed:#{user_id}")
-    CheckdWeb.Endpoint.subscribe("badge_user:my_badges:changed:#{user_id}")
+      # {:ok, _} = Checkd.BadgeManagement.authenticate_badge(%{user_id: "3d4f09c7-2d2e-4acc-aea8-0ca303e9013a", badge_id: "f09b03db-3559-4f44-8ca7-a8a38b1336f8"})
 
-    # {:ok, _} = Checkd.BadgeManagement.authenticate_badge(%{user_id: "3d4f09c7-2d2e-4acc-aea8-0ca303e9013a", badge_id: "f09b03db-3559-4f44-8ca7-a8a38b1336f8"})
+      socket = assign(socket, %{
+        user_id: user_id,
+        checkd_id: checkd_id(user_id),
+        my_badges: my_badges(user_id),
+        public_badges: public_badges(user_id),
+      })
 
-    socket = assign(socket, %{
-      user_id: user_id,
-      checkd_id: checkd_id(user_id),
-      my_badges: my_badges(user_id),
-      public_badges: public_badges(user_id),
-    })
-
-    {:ok, render_with(socket, &CheckdWeb.BadgeUser.DashboardLiveTemplate.render/1)}
-
-    {:ok, socket}
+      {:ok, render_with(socket, &CheckdWeb.BadgeUser.DashboardLiveTemplate.render/1)}
+    end
   end
 
   def handle_params(unsigned_params, _uri, socket) do
@@ -47,8 +45,6 @@ defmodule CheckdWeb.BadgeUser.DashboardLive do
         _ ->
           %{}
       end
-
-      socket = render_with(socket, &CheckdWeb.BadgeUser.DashboardLiveTemplate.render/1)
 
     {:noreply, assign(socket, page_params: page_params)}
   end

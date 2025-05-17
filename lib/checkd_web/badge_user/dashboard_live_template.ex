@@ -162,9 +162,9 @@ defmodule CheckdWeb.BadgeUser.DashboardLiveTemplate do
                     <a href="#">CheckD User</a>
                 </h3>
                 <p class="font-light text-gray-500 dark:text-gray-400">{@checkd_id}</p>
-                <a href="#" class="cursor-not-allowed inline-flex items-center justify-center w-full py-2.5 px-5 mt-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                <a href={~p"/sign-out"} class="inline-flex items-center justify-center w-full py-2.5 px-5 mt-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                     <svg aria-hidden="true" class="mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                    Logout
+                    Sign Out
                 </a>
             </div>
             <ul class="pt-5 my-5 space-y-2 border-t border-gray-200 dark:border-gray-700">

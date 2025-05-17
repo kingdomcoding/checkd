@@ -22,6 +22,9 @@ defmodule CheckdWeb.Router do
     live "/my-badges/:id", DashboardLive, :my_badge
     live "/public-badges", DashboardLive, :public_badges
     live "/public-badges/:id", DashboardLive, :public_badge
+
+    get "/sign-in", AuthController, :sign_in
+    get "/sign-out", AuthController, :sign_out
   end
 
   scope "/super-admin", CheckdWeb.SuperAdmin do
