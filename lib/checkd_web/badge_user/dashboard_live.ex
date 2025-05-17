@@ -182,7 +182,7 @@ defmodule CheckdWeb.BadgeUser.DashboardLive do
     Enum.map(badges, fn badge ->
       authentication_status =
         if badge.authenticated_on do
-          "Authenticated on #{badge.authenticated_on.month} #{badge.authenticated_on.day}, #{badge.authenticated_on.year}"
+          "Authenticated on #{Timex.month_name(badge.authenticated_on.month)} #{badge.authenticated_on.day}, #{badge.authenticated_on.year}"
         else
           "Not authenticated"
         end
