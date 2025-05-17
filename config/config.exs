@@ -11,6 +11,7 @@ config :checkd, event_stores: [Checkd.EventStore]
 
 config :checkd, ash_domains: [
   Checkd.BadgeManagement,
+  Checkd.UserManagement,
   CheckdWeb.BadgeUser.ReadModels.Domain,
 ]
 
