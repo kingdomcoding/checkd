@@ -4,6 +4,15 @@ defmodule CheckdWeb.BadgeUser.SignedOutDashboardLiveTemplate do
   def render(assigns) do
     ~H"""
     <.sidebar />
+    <.empty_state>
+        <:message>You're not signed in yet</:message>
+        <:action>
+            <.link navigate={~p"/sign-in"} class="w-full inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
+                Sign In
+                <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </.link>
+        </:action>
+    </.empty_state>
     """
   end
 
@@ -87,6 +96,18 @@ defmodule CheckdWeb.BadgeUser.SignedOutDashboardLiveTemplate do
             </div>
         </div>
     </aside>
+    """
+  end
+
+  def empty_state(assigns) do
+    ~H"""
+    <div class="mx-auto mt-48 max-w-md p-4 text-center rounded-lg shadow sm:p-5">
+        <img src={~p"/images/exclamation.svg"} class="w-32 h-32 mb-4 mx-auto" alt="Oops" />
+        <p class="mb-4 text-gray-500 dark:text-gray-300">{render_slot(@message)}</p>
+        <div class="mt-8">
+            {render_slot(@action)}
+        </div>
+    </div>
     """
   end
 end
