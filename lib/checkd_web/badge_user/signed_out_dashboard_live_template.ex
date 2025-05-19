@@ -47,10 +47,6 @@ defmodule CheckdWeb.BadgeUser.SignedOutDashboardLiveTemplate do
                         <img src={~p"/images/badges.svg"} class="w-6 h-6" alt="Badges" />
                         <span class="ml-3">My Badges</span>
                     </a>
-                    <a href="#" class="cursor-not-allowed flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <img src={~p"/images/inbox.svg"} class="w-6 h-6" alt="Inbox" />
-                        <span class="ml-3">My Badges</span>
-                    </a>
                 </li>
                 <li>
                     <a href="#" class="cursor-not-allowed flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
